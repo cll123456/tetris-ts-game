@@ -5,7 +5,7 @@ module.exports = (options = {}) => {
   console.log(options,'------')
   return {
     mode: options.production ? 'production' : 'development',
-    entry: "./src/index.js",
+    entry: "./src/index.ts",
     output: {
       path: path.resolve(__dirname, 'dist'),
       filename: options.production ? 'js/[name].[chunkhash:5].js' : '[name].js',
@@ -25,5 +25,15 @@ module.exports = (options = {}) => {
     devServer: {
       contentBase: './dist',
     },
+    resolve: {
+      // Add `.ts` and `.tsx` as a resolvable extension.
+      extensions: [".ts", ".tsx", ".js"]
+    },
+    module: {
+      rules: [
+        // all files with a `.ts` or `.tsx` extension will be handled by `ts-loader`
+        { test: /\.tsx?$/, loader: "ts-loader" }
+      ]
+    }
   }
 }
