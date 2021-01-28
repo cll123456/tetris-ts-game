@@ -48,7 +48,6 @@ export class BlockGroup {
         y: this.shape[i].y + v.y,
       }
     })
-    console.log(this.BlockArr)
     this._centerPointer = v;
 
   }

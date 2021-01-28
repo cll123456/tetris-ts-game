@@ -32,3 +32,20 @@ export interface IShower {
  * 小方块的形状，是由点的坐标组成的
  */
 export type TShape = IPoint[]
+/**
+ * 方块移动的方块
+ */
+export enum EDirection {
+  /**
+   * 向下移动
+   */
+  down,
+  /**
+   * 向左边移动
+   */
+  left,
+  /**
+   * 向右边移动
+   */
+  right,
+}

@@ -1,40 +1,30 @@
-import { Block } from "./core/Block";
 import { PageShower } from "./core/viewer/PageShower";
 import $ from 'jquery'
-import { BlockGroup } from "./core/BlockGroup";
+import { TetrisFactory } from "./core/TetrisFactory";
+import { TetrisRules } from "./core/TetrisRules";
+import { EDirection } from "./core/types";
 
 
 
-const bp = new BlockGroup([{ x: -2, y: 0 }, { x: -1, y: 0 }, { x: 0, y: 0 }, { x: 0, y: -1 }], { x: 4, y: 5 }, 'red');
+const bp = TetrisFactory.getTetrisBlock({ x: 3, y: 5 });
 bp.BlockArr.forEach(b => {
   b.shower = new PageShower($('#root'), b);
   b.shower.show();
 });
 
 $('#up').on('click', () => {
-  bp.centerPointer = {
+  TetrisRules.move(bp, {
     x: bp.centerPointer.x,
     y: bp.centerPointer.y - 1
-  }
-  console.log(bp.centerPointer);
-  console.log(bp.shape);
-  
+  })
+
 })
 $('#down').on('click', () => {
-  bp.centerPointer = {
-    x: bp.centerPointer.x,
-    y: bp.centerPointer.y + 1
-  }
+  TetrisRules.moveDirectly(bp, EDirection.down);
 })
 $('#left').on('click', () => {
-  bp.centerPointer = {
-    x: bp.centerPointer.x - 1,
-    y: bp.centerPointer.y
-  }
+  TetrisRules.move(bp, EDirection.left);
 })
 $('#right').on('click', () => {
-  bp.centerPointer = {
-    x: bp.centerPointer.x + 1,
-    y: bp.centerPointer.y
-  }
+  TetrisRules.move(bp, EDirection.right);
 })
