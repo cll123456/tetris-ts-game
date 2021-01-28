@@ -4,7 +4,7 @@
 
 import { BlockGroup } from "./BlockGroup";
 import { LogicConfig } from "./config/LogicConfig";
-import { EDirection, IPoint } from "./types";
+import { EDirection, IPoint, TShape } from "./types";
 /**
  * 判断是否为一个坐标，使用自定义的类型保护
  * @param obj 
@@ -20,11 +20,11 @@ function isPoint(obj: any): obj is IPoint {
 export class TetrisRules {
   /**
    * 检测目标位置是否可以移动
-   * @param tetrisBlock 
+   * @param shape 移动的图形
    * @param targetPoint 
    */
-  static isMove(tetrisBlock: BlockGroup, targetPoint: IPoint) {
-    const targetBlockPoint: IPoint[] = tetrisBlock.shape.map(it => {
+  static isMove(shape: TShape, targetPoint: IPoint) {
+    const targetBlockPoint: IPoint[] = shape.map(it => {
       return {
         x: it.x + targetPoint.x,
         y: it.y + targetPoint.y
@@ -55,7 +55,7 @@ export class TetrisRules {
   static move(tetrisBlock: BlockGroup, targetPointOrDirection: IPoint | EDirection): boolean {
     if (isPoint(targetPointOrDirection)) {
       // 通过目标点来进行移动的
-      if (this.isMove(tetrisBlock, targetPointOrDirection)) {
+      if (this.isMove(tetrisBlock.shape, targetPointOrDirection)) {
         tetrisBlock.centerPointer = targetPointOrDirection;
         return true;
       }
@@ -92,5 +92,19 @@ export class TetrisRules {
    */
   static moveDirectly(tetrisBlock: BlockGroup, direction: EDirection) {
     while (this.move(tetrisBlock, direction)) { }
+  }
+  /**
+   * 方块旋转的规则
+   * @param tetrisBlock 
+   */
+  static rotate(tetrisBlock: BlockGroup) {
+    // 获取旋转后的每个方块的位置
+    const shapePoint = tetrisBlock.getRoateShape();
+    if (this.isMove(shapePoint, tetrisBlock.centerPointer)) {
+      tetrisBlock.roateBlock();
+      return true;
+    } else {
+      return false;
+    }
   }
 }

@@ -8,47 +8,102 @@ import { getRandom } from "./util/utils";
 /**
  * L形方块
  *   b
- * bbb
+ * bbb [{ x: -2, y: 0 }, { x: -1, y: 0 }, { x: 0, y: 0 }, { x: 0, y: -1 }]
  */
-export const LShape: TShape = [{ x: -2, y: 0 }, { x: -1, y: 0 }, { x: 0, y: 0 }, { x: 0, y: -1 }];
+export class LShape extends BlockGroup {
+  constructor(_centerPointer: IPoint, _color: string) {
+    super([{ x: -2, y: 0 }, { x: -1, y: 0 }, { x: 0, y: 0 }, { x: 0, y: -1 }], _centerPointer, _color)
+  }
+}
 
 /**
  * L反向形状
  * b
- * bbb
+ * bbb  [{ x: 0, y: -1 }, { x: 0, y: 0 }, { x: 1, y: 0 }, { x: 2, y: 0 }]
  */
-export const LMirrorShape: TShape = [{ x: 0, y: -1 }, { x: 0, y: 0 }, { x: 1, y: 0 }, { x: 2, y: 0 }];
+export class LMirrorShape extends BlockGroup {
+  constructor(_centerPointer: IPoint, _color: string) {
+    super([{ x: 0, y: -1 }, { x: 0, y: 0 }, { x: 1, y: 0 }, { x: 2, y: 0 }], _centerPointer, _color)
+  }
+};
 
 
 /**
  * 倒T形状
  *  b
- * bbb
+ * bbb [{ x: -1, y: 0 }, { x: 0, y: 0 }, { x: 1, y: 0 }, { x: 0, y: 1 }]
  */
-export const TInvertedShape: TShape = [{ x: -1, y: 0 }, { x: 0, y: 0 }, { x: 1, y: 0 }, { x: 0, y: 1 }];
+export class TInvertedShape extends BlockGroup {
+  constructor(_centerPointer: IPoint, _color: string) {
+    super([{ x: -1, y: 0 }, { x: 0, y: 0 }, { x: 1, y: 0 }, { x: 0, y: 1 }], _centerPointer, _color)
+  }
+}
 /**
  * S形状
  *  bb
- * bb
+ * bb  [{ x: -1, y: 0 }, { x: 0, y: 0 }, { x: 0, y: -1 }, { x: 1, y: -1 }];
  */
-export const SShape: TShape = [{ x: -1, y: 0 }, { x: 0, y: 0 }, { x: 0, y: -1 }, { x: 1, y: -1 }];
+export class SShape extends BlockGroup {
+  constructor(_centerPointer: IPoint, _color: string) {
+    super([{ x: -1, y: 0 }, { x: 0, y: 0 }, { x: 0, y: -1 }, { x: 1, y: -1 }], _centerPointer, _color)
+  }
+  /**
+   * 重写父类旋转方法，只能左右旋转
+   */
+  roateBlock() {
+    super.roateBlock();
+    this.isClocked = !this.isClocked;
+  }
+}
 /**
  * 倒S形状
  * bb
- *  bb
+ *  bb [{ x: -1, y: -1 }, { x: 0, y: -1 }, { x: 0, y: 0 }, { x: 1, y: 0 }]
  */
-export const SMirrorShape: TShape = [{ x: -1, y: -1 }, { x: 0, y: -1 }, { x: 0, y: 0 }, { x: 1, y: 0 }];
+export class SMirrorShape extends BlockGroup {
+  constructor(_centerPointer: IPoint, _color: string) {
+    super([{ x: -1, y: -1 }, { x: 0, y: -1 }, { x: 0, y: 0 }, { x: 1, y: 0 }], _centerPointer, _color)
+  }
+  /**
+   * 重写父类旋转方法，只能左右旋转
+   */
+  roateBlock() {
+    super.roateBlock();
+    this.isClocked = !this.isClocked;
+  }
+}
 /**
  * 田字性转
  * bb
- * bb
+ * bb [{ x: 0, y: -1 }, { x: 1, y: -1 }, { x: 0, y: 0 }, { x: 1, y: 0 }]
  */
-export const SquareShape: TShape = [{ x: 0, y: -1 }, { x: 1, y: -1 }, { x: 0, y: 0 }, { x: 1, y: 0 }];
+export class SquareShape extends BlockGroup {
+  constructor(_centerPointer: IPoint, _color: string) {
+    super([{ x: 0, y: -1 }, { x: 1, y: -1 }, { x: 0, y: 0 }, { x: 1, y: 0 }], _centerPointer, _color)
+  }
+  /**
+   * 田字的不能旋转，重写父类方法，获取原来的旋转的图形
+   */
+  getRoateShape(): TShape {
+    return this.shape;
+  }
+}
 /**
  * 一字型
- * bbbb
+ * bbbb [{ x: -1, y: 0 }, { x: 0, y: 0 }, { x: 1, y: 0 }, { x: 2, y: 0 }]
  */
-export const LineShape: TShape = [{ x: -1, y: 0 }, { x: 0, y: 0 }, { x: 1, y: 0 }, { x: 2, y: 0 }];
+export class LineShape extends BlockGroup {
+  constructor(_centerPointer: IPoint, _color: string) {
+    super([{ x: -1, y: 0 }, { x: 0, y: 0 }, { x: 1, y: 0 }, { x: 2, y: 0 }], _centerPointer, _color)
+  }
+  /**
+ * 重写父类旋转方法，只能左右旋转
+ */
+  roateBlock() {
+    super.roateBlock();
+    this.isClocked = !this.isClocked;
+  }
+};
 
 /**
  * 颜色数组
@@ -65,7 +120,7 @@ export const colors = [
  * 俄罗斯方块工厂类
  */
 export class TetrisFactory {
-  static shapeArr: readonly TShape[] = [LShape, LMirrorShape, TInvertedShape, SShape, SMirrorShape, SquareShape, LineShape]
+  static shapeArr = [LShape, LMirrorShape, TInvertedShape, SShape, SMirrorShape, SquareShape, LineShape]
   /**
    * 对外提供一个获取俄罗斯方块的静态方法
    * @param centerPointer 中心点的位置
@@ -73,6 +128,6 @@ export class TetrisFactory {
   static getTetrisBlock(centerPointer: IPoint) {
     const shapeIndex = getRandom(0, this.shapeArr.length);
     const colorIndex = getRandom(0, colors.length);
-    return new BlockGroup(this.shapeArr[shapeIndex], centerPointer, colors[colorIndex]);
+    return new this.shapeArr[shapeIndex](centerPointer, colors[colorIndex])
   }
 }

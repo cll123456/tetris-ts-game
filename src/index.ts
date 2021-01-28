@@ -28,3 +28,6 @@ $('#left').on('click', () => {
 $('#right').on('click', () => {
   TetrisRules.move(bp, EDirection.right);
 })
+$('#roate').on('click', () => {
+  TetrisRules.rotate(bp);
+})
