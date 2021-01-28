@@ -27,3 +27,8 @@ export interface IShower {
    */
   remove(): void
 }
+
+/**
+ * 小方块的形状，是由点的坐标组成的
+ */
+export type TShape = IPoint[]

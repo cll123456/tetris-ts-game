@@ -20,7 +20,7 @@ export class Block {
    */
   public set point(val: IPoint) {
     this._point = val;
-    // 左边改变，需要调用显示者
+    // 坐标改变，需要调用显示者
     if (this._shower) {
       this._shower.show();
     }
@@ -48,6 +48,9 @@ export class Block {
    */
   public set shower(val) {
     this._shower = val;
+    if (this._shower) {
+      this._shower.show();
+    }
   }
   /**
    * 设置显示者
