@@ -1,3 +1,4 @@
+import { Block } from "./Block";
 import { BlockGroup } from "./BlockGroup";
 import { TetrisFactory } from "./TetrisFactory";
 import { TetrisRules } from "./TetrisRules";
@@ -29,6 +30,10 @@ export class Game {
    * 方块下落的时间，默认1s
    */
   private _duration: number = 1000;
+  /**
+   * 存在的方块
+   */
+  private _existBlock: Block[] = [];
 
   constructor(private _gameShower: IGameViewer) {
     this._gameShower.showNext(this._nextTetris);
@@ -48,15 +53,24 @@ export class Game {
     this._gameStatus = EGameStatus.playing;
     // 切换方块
     if (!this._curTetris) {
-      this.swichTetris();
+      this.switchTetris();
     }
     // 当前方块自由下落
     this.autoDrop();
   }
   /**
+   * 触底处理
+   */
+  private hitBottom() {
+    // 把当前方块打散，存在数组中
+    this._existBlock = [...this._curTetris!.BlockArr]
+    // 触底后，切换下一个方块
+    this.switchTetris();
+  }
+  /**
    * 切换当前和下一个俄罗斯方块
    */
-  private swichTetris() {
+  private switchTetris() {
     // 把下一个俄罗斯方块给当前游戏的俄罗斯方块
     this._curTetris = this._nextTetris;
     this.centerBlock(this._curTetris, PageShowerConfig.blockPaneSize.width)
@@ -79,31 +93,34 @@ export class Game {
     this._timer = setInterval(() => {
       if (this._curTetris) {
         // 方块向下移动
-        TetrisRules.move(this._curTetris, EDirection.down)
+        if(!TetrisRules.move(this._curTetris, EDirection.down,this._existBlock)){
+           // 触底处理
+           this.hitBottom();
+        }
       }
     }, this._duration)
   }
 
   /**
    * 让俄罗斯方块居中
-   * @param tetris  俄罗斯方块
+   * @param blkGrp  俄罗斯方块
    * @param width  逻辑宽度
    */
-  private centerBlock(tetris: BlockGroup, width: number) {
+  private centerBlock(blkGrp: BlockGroup, width: number) {
     // 把方块的中心点改了，方块就会自动居中
     // 获取横轴方向的中心点
-    const hroiWidth = Math.ceil(width / 2) - 1;
-    const veriHeight = 0;
-    tetris.centerPointer = {
-      x: hroiWidth,
-      y: veriHeight
+    const horX = Math.ceil(width / 2) - 1;
+    const verY = 0;
+    blkGrp.centerPointer = {
+      x: horX,
+      y: verY
     }
     // 判断是否超出
-    while (tetris.BlockArr.some(tb => tb.point.y < 0)) {
+    while (blkGrp.BlockArr.some(tb => tb.point.y < 0)) {
       // 如果超出了，需要向下移动一行,怕死循环，直接向下移动一行
-      tetris.centerPointer = {
-        x: tetris.centerPointer.x,
-        y: tetris.centerPointer.y + 1
+      blkGrp.centerPointer = {
+        x: blkGrp.centerPointer.x,
+        y: blkGrp.centerPointer.y + 1
       }
     }
   }
@@ -122,32 +139,34 @@ export class Game {
    */
   public left() {
     if (this._curTetris && this._gameStatus === EGameStatus.playing) {
-      TetrisRules.move(this._curTetris, EDirection.left)
+      TetrisRules.move(this._curTetris, EDirection.left,this._existBlock)
     }
   }
 
   /**
- * 左移动
+ * 右移动
  */
   public right() {
     if (this._curTetris && this._gameStatus === EGameStatus.playing) {
-      TetrisRules.move(this._curTetris, EDirection.right)
+      TetrisRules.move(this._curTetris, EDirection.right,this._existBlock)
     }
   }
   /**
-  * 左移动
+  * 向下移动
   */
   public down() {
     if (this._curTetris && this._gameStatus === EGameStatus.playing) {
-      TetrisRules.moveDirectly(this._curTetris, EDirection.down)
+      TetrisRules.moveDirectly(this._curTetris, EDirection.down,this._existBlock)
+      // 触底处理
+      this.hitBottom();
     }
   }
-/**
- * 方块旋转
- */
-  public rotate(){
+  /**
+   * 方块旋转
+   */
+  public rotate() {
     if (this._curTetris && this._gameStatus === EGameStatus.playing) {
-      TetrisRules.rotate(this._curTetris)
+      TetrisRules.rotate(this._curTetris,this._existBlock)
     }
   }
 }

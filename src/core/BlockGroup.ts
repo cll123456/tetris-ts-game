@@ -90,7 +90,7 @@ export class BlockGroup {
    * 逆时针的规律如下： （x, y） -> (y, -x)
    * 
    */
-  public getRoateShape(): TShape {
+  public getRotateShape(): TShape {
     if (this.isClocked) {
       // 顺时针旋转
       return this.shape.map(p => {
@@ -112,8 +112,8 @@ export class BlockGroup {
   /**
    * 旋转方块
    */
-  public roateBlock() {
-    this._shape = this.getRoateShape();
+  public rotateBlock() {
+    this._shape = this.getRotateShape();
     // 旋转后，设置每一个方块
     this.setBlockPoint();
   }

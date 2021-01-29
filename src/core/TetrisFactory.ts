@@ -51,8 +51,8 @@ export class SShape extends BlockGroup {
   /**
    * 重写父类旋转方法，只能左右旋转
    */
-  roateBlock() {
-    super.roateBlock();
+  rotateBlock() {
+    super.rotateBlock();
     this.isClocked = !this.isClocked;
   }
 }
@@ -68,8 +68,8 @@ export class SMirrorShape extends BlockGroup {
   /**
    * 重写父类旋转方法，只能左右旋转
    */
-  roateBlock() {
-    super.roateBlock();
+  rotateBlock() {
+    super.rotateBlock();
     this.isClocked = !this.isClocked;
   }
 }
@@ -85,7 +85,7 @@ export class SquareShape extends BlockGroup {
   /**
    * 田字的不能旋转，重写父类方法，获取原来的旋转的图形
    */
-  getRoateShape(): TShape {
+  getRotateShape(): TShape {
     return this.shape;
   }
 }
@@ -100,8 +100,8 @@ export class LineShape extends BlockGroup {
   /**
  * 重写父类旋转方法，只能左右旋转
  */
-  roateBlock() {
-    super.roateBlock();
+  rotateBlock() {
+    super.rotateBlock();
     this.isClocked = !this.isClocked;
   }
 };
