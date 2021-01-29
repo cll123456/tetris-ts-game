@@ -7,11 +7,20 @@
   <title>俄罗斯方块</title>
   <style>
     #root {
+      display: flex;
+      justify-content: center;
+      
+    }
+    #panel{
       width: 450px;
       height: 600px;
-      margin: 20px auto;
       background-color: #F2F6FC;
       position: relative;
+    }
+    #next{
+      position: relative;
+      width: 120px;
+      height: 120px;
     }
 
     #btn {
@@ -23,13 +32,19 @@
 </head>
 
 <body>
-  <div id="root"></div>
+  <div id="root">
+    <div id="panel"></div>
+    <div id="other">
+      <div id="next"></div>
+    </div>
+  </div>
   <div id="btn">
-    <button id="up"> 向上移动 </button>
     <button id="down"> 向下移动 </button>
     <button id="left"> 向左移动 </button>
     <button id="right"> 向右移动 </button>
     <button id="roate"> 旋转 </button>
+    <button id="start"> 开始游戏 </button>
+    <button id="pause"> 暂停游戏 </button>
   </div>
 </body>
 

@@ -31,11 +31,12 @@ export class LMirrorShape extends BlockGroup {
 /**
  * 倒T形状
  *  b
- * bbb [{ x: -1, y: 0 }, { x: 0, y: 0 }, { x: 1, y: 0 }, { x: 0, y: 1 }]
+ * bbb [{ x: -1, y: 0 }, { x: 0, y: 0 }, { x: 1, y: 0 }, { x: 0, y: -1 }]
+ *     
  */
 export class TInvertedShape extends BlockGroup {
   constructor(_centerPointer: IPoint, _color: string) {
-    super([{ x: -1, y: 0 }, { x: 0, y: 0 }, { x: 1, y: 0 }, { x: 0, y: 1 }], _centerPointer, _color)
+    super([{ x: -1, y: 0 }, { x: 0, y: 0 }, { x: 1, y: 0 }, { x: 0, y: -1 }], _centerPointer, _color)
   }
 }
 /**

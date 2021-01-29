@@ -1,5 +1,7 @@
 // 公共的类型
 
+import { BlockGroup } from "./BlockGroup";
+
 /**
  * 逻辑的点的位置
  */
@@ -48,4 +50,42 @@ export enum EDirection {
    * 向右边移动
    */
   right,
+}
+/**
+ * 游戏的枚举状态
+ */
+export enum EGameStatus {
+  /**
+   * 游戏初始化，还未开始
+   */
+  init,
+  /**
+   * 游戏进行中
+   */
+  playing,
+  /**
+   * 游戏暂停
+   */
+  pause,
+  /**
+   * 游戏结束
+   */
+  over
+}
+
+/**
+ * 游戏类的显示接口
+ */
+export interface IGameViewer{
+  /**
+   * 显示下一个方块
+   * @param tetris x
+   */
+  showNext(tetris: BlockGroup) : void;
+
+  /**
+   * 切换方块
+   * @param tetris 
+   */
+  switchBlock(tetris: BlockGroup): void;
 }

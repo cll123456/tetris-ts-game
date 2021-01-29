@@ -40,7 +40,7 @@ export class PageShower implements IShower {
    * 移除方块
    */
   remove(): void {
-    if (this._dom) {
+    if (this._dom && !this.isRemove) {
       this._dom.remove();
       this.isRemove = true;
     }

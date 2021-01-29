@@ -1,33 +1,25 @@
-import { PageShower } from "./core/viewer/PageShower";
+import { Game } from "./core/Game";
+import { PageGameShower } from "./core/viewer/PageGameShower";
 import $ from 'jquery'
-import { TetrisFactory } from "./core/TetrisFactory";
-import { TetrisRules } from "./core/TetrisRules";
-import { EDirection } from "./core/types";
 
+const game = new Game(new PageGameShower())
 
-
-const bp = TetrisFactory.getTetrisBlock({ x: 3, y: 5 });
-bp.BlockArr.forEach(b => {
-  b.shower = new PageShower($('#root'), b);
-  b.shower.show();
-});
-
-$('#up').on('click', () => {
-  TetrisRules.move(bp, {
-    x: bp.centerPointer.x,
-    y: bp.centerPointer.y - 1
-  })
-
+$('#start').on('click', () => {
+  game.start();
 })
-$('#down').on('click', () => {
-  TetrisRules.moveDirectly(bp, EDirection.down);
+
+$('#pause').on('click', () => {
+  game.pause();
 })
 $('#left').on('click', () => {
-  TetrisRules.move(bp, EDirection.left);
+  game.left();
 })
 $('#right').on('click', () => {
-  TetrisRules.move(bp, EDirection.right);
+  game.right();
+})
+$('#down').on('click', () => {
+  game.down();
 })
 $('#roate').on('click', () => {
-  TetrisRules.rotate(bp);
+  game.rotate();
 })
