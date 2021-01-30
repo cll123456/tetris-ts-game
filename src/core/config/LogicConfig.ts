@@ -5,7 +5,7 @@ export const LogicConfig = {
     /**
      * 宽
      */
-    width: 15, 
+    width: 10, 
     /**
      * 高
      */

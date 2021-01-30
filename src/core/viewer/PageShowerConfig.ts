@@ -19,6 +19,6 @@ export default {
    */
   blockPaneSize:{
     height: 20,
-    width: 15
+    width: 10
   }
 }

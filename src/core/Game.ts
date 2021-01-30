@@ -63,7 +63,10 @@ export class Game {
    */
   private hitBottom() {
     // 把当前方块打散，存在数组中
-    this._existBlock = [...this._curTetris!.BlockArr]
+    this._existBlock = [...this._existBlock, ...this._curTetris!.BlockArr];
+    // 判断当前存在的是否可以消除方块
+    const num = TetrisRules.removeBlock(this._existBlock);
+    console.log(num, '-======')
     // 触底后，切换下一个方块
     this.switchTetris();
   }
@@ -93,9 +96,9 @@ export class Game {
     this._timer = setInterval(() => {
       if (this._curTetris) {
         // 方块向下移动
-        if(!TetrisRules.move(this._curTetris, EDirection.down,this._existBlock)){
-           // 触底处理
-           this.hitBottom();
+        if (!TetrisRules.move(this._curTetris, EDirection.down, this._existBlock)) {
+          // 触底处理
+          this.hitBottom();
         }
       }
     }, this._duration)
@@ -139,7 +142,7 @@ export class Game {
    */
   public left() {
     if (this._curTetris && this._gameStatus === EGameStatus.playing) {
-      TetrisRules.move(this._curTetris, EDirection.left,this._existBlock)
+      TetrisRules.move(this._curTetris, EDirection.left, this._existBlock)
     }
   }
 
@@ -148,7 +151,7 @@ export class Game {
  */
   public right() {
     if (this._curTetris && this._gameStatus === EGameStatus.playing) {
-      TetrisRules.move(this._curTetris, EDirection.right,this._existBlock)
+      TetrisRules.move(this._curTetris, EDirection.right, this._existBlock)
     }
   }
   /**
@@ -156,7 +159,7 @@ export class Game {
   */
   public down() {
     if (this._curTetris && this._gameStatus === EGameStatus.playing) {
-      TetrisRules.moveDirectly(this._curTetris, EDirection.down,this._existBlock)
+      TetrisRules.moveDirectly(this._curTetris, EDirection.down, this._existBlock)
       // 触底处理
       this.hitBottom();
     }
@@ -166,7 +169,7 @@ export class Game {
    */
   public rotate() {
     if (this._curTetris && this._gameStatus === EGameStatus.playing) {
-      TetrisRules.rotate(this._curTetris,this._existBlock)
+      TetrisRules.rotate(this._curTetris, this._existBlock)
     }
   }
 }

@@ -6,6 +6,7 @@ import { Block } from "./Block";
 import { BlockGroup } from "./BlockGroup";
 import { LogicConfig } from "./config/LogicConfig";
 import { EDirection, IPoint, TShape } from "./types";
+import PageShowerConfig from "./viewer/PageShowerConfig";
 /**
  * 判断是否为一个坐标，使用自定义的类型保护
  * @param obj 
@@ -122,5 +123,49 @@ export class TetrisRules {
     } else {
       return false;
     }
+  }
+
+  // 需要进行消除处理,
+  static removeBlock(blocks:Block[]):number{
+    // 获取里面有几行
+    const ys = blocks.map( bk => bk.point.y)
+    const maxY = Math.max(...ys);
+    const minY = Math.min(...ys);
+    let num = 0;
+    for(let y = minY; y <= maxY; y++){
+      // 判断传入的行是否占满整行
+     const blockNum = blocks.filter(bk => bk.point.y === y);
+     if(blockNum.length > 0&& blockNum.length === PageShowerConfig.blockPaneSize.width){
+       // 消除当前行
+       this.removeBlockByLine(blocks, y);
+       num ++;
+     }
+    }
+    return num
+  }
+
+  /**
+   * t通过指定的行来消除方块
+   * @param blocks 
+   * @param y 
+   */
+  static removeBlockByLine(blocks:Block[], y:number){
+    // 先把页面上的给消除掉，然后把数组中的也给消除掉
+    // 消除页面中的
+    blocks.filter(bk => bk.point.y === y).forEach(bk => {
+      if(bk.shower){
+        bk.shower.remove()
+      }
+      // 移除数组中的
+      const index = blocks.indexOf(bk);
+      blocks.splice(index, 1)
+    })
+    // 从小的地方开始消除，其他比当前小的需要加1
+    blocks.filter(bk => bk.point.y < y).forEach(bk => {
+     bk.point = {
+       x: bk.point.x,
+       y: bk.point.y + 1
+     }
+    })
   }
 }
