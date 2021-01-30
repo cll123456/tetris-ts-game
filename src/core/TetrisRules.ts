@@ -4,7 +4,6 @@
 
 import { Block } from "./Block";
 import { BlockGroup } from "./BlockGroup";
-import { LogicConfig } from "./config/LogicConfig";
 import { EDirection, IPoint, TShape } from "./types";
 import PageShowerConfig from "./viewer/PageShowerConfig";
 /**
@@ -34,7 +33,7 @@ export class TetrisRules {
       }
     })
     // 这里减1 是 因为长度逻辑长度和矿都都是从0开始的
-    let r = targetBlockPoint.some(s => (s.x < 0 || s.x > LogicConfig.PanelSize.width - 1 || s.y < 0 || s.y > LogicConfig.PanelSize.height - 1));
+    let r = targetBlockPoint.some(s => (s.x < 0 || s.x > PageShowerConfig.blockPaneSize.width - 1 || s.y < 0 || s.y > PageShowerConfig.blockPaneSize.height - 1));
     if(r){
       return false;
     }

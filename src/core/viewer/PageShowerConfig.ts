@@ -18,7 +18,7 @@ export default {
    * 方块容器大小
    */
   blockPaneSize:{
-    height: 20,
+    height: 10,
     width: 10
   }
 }

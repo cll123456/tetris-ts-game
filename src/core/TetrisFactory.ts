@@ -8,22 +8,22 @@ import { getRandom } from "./util/utils";
 /**
  * L形方块
  *   b
- * bbb [{ x: -2, y: 0 }, { x: -1, y: 0 }, { x: 0, y: 0 }, { x: 0, y: -1 }]
+ * bbb [{ x: -1, y: 0 }, { x: 0, y: 0 }, { x: 1, y: 0 }, { x: 1, y: -1 }]
  */
 export class LShape extends BlockGroup {
   constructor(_centerPointer: IPoint, _color: string) {
-    super([{ x: -2, y: 0 }, { x: -1, y: 0 }, { x: 0, y: 0 }, { x: 0, y: -1 }], _centerPointer, _color)
+    super([{ x: -1, y: 0 }, { x: 0, y: 0 }, { x: 1, y: 0 }, { x: 1, y: -1 }], _centerPointer, _color)
   }
 }
 
 /**
  * L反向形状
  * b
- * bbb  [{ x: 0, y: -1 }, { x: 0, y: 0 }, { x: 1, y: 0 }, { x: 2, y: 0 }]
+ * bbb  [{ x: -1, y: -1 }, { x: -1, y: 0 }, { x: 0, y: 0 }, { x: 1, y: 0 }]
  */
 export class LMirrorShape extends BlockGroup {
   constructor(_centerPointer: IPoint, _color: string) {
-    super([{ x: 0, y: -1 }, { x: 0, y: 0 }, { x: 1, y: 0 }, { x: 2, y: 0 }], _centerPointer, _color)
+    super([{ x: -1, y: -1 }, { x: -1, y: 0 }, { x: 0, y: 0 }, { x: 1, y: 0 }], _centerPointer, _color)
   }
 };
 

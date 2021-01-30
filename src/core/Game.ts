@@ -34,8 +34,35 @@ export class Game {
    * 存在的方块
    */
   private _existBlock: Block[] = [];
+  /**
+   * 游戏得分
+   */
+  private _scores: number = 0;
 
   constructor(private _gameShower: IGameViewer) {
+    this.createNextBlock();
+  }
+
+  /**
+   * 初始化游戏
+   */
+  private init() {
+    // 把展示类中的显示给清除
+    this._existBlock.forEach(eb => {
+      if (eb.shower) {
+        eb.shower.remove();
+      }
+    })
+    this._existBlock = [];
+    this._scores = 0;
+    this._curTetris = undefined;
+    this.createNextBlock();
+  }
+  /**
+   * 创建下一个方块
+   */
+  private createNextBlock() {
+    this._nextTetris = TetrisFactory.getTetrisBlock({ x: 0, y: 0 });
     this._gameShower.showNext(this._nextTetris);
     // 显示下一个的时候，需要把方块居中
     this.centerBlock(this._nextTetris, PageShowerConfig.nextPanelSize.width)
@@ -48,6 +75,10 @@ export class Game {
     if (this._gameStatus === EGameStatus.playing) {
       // 游戏正在进行中，啥也不做
       return;
+    }
+    if (this._gameStatus === EGameStatus.over) {
+      // 重新开始游戏
+      this.init()
     }
     // 修改当前的游戏状态
     this._gameStatus = EGameStatus.playing;
@@ -66,9 +97,33 @@ export class Game {
     this._existBlock = [...this._existBlock, ...this._curTetris!.BlockArr];
     // 判断当前存在的是否可以消除方块
     const num = TetrisRules.removeBlock(this._existBlock);
-    console.log(num, '-======')
+    // 进行积分统计
+    this.getScores(num);
     // 触底后，切换下一个方块
     this.switchTetris();
+  }
+/**
+ * 通过行来获取分数
+ * @param num 
+ */
+  private getScores(num: number) {
+    if (num === 0) {
+      return;
+    }
+    else if (num === 1) {
+      this._scores += 10;
+    }
+    else if (num === 2) {
+      this._scores += 25;
+    }
+    else if (num === 3) {
+      this._scores += 50;
+    }
+    else {
+      this._scores += 100;
+    }
+    console.log(this._scores);
+    
   }
   /**
    * 切换当前和下一个俄罗斯方块
@@ -76,14 +131,26 @@ export class Game {
   private switchTetris() {
     // 把下一个俄罗斯方块给当前游戏的俄罗斯方块
     this._curTetris = this._nextTetris;
-    this.centerBlock(this._curTetris, PageShowerConfig.blockPaneSize.width)
-    // 重新获取下一个俄罗斯方块
-    this._nextTetris = TetrisFactory.getTetrisBlock({ x: 0, y: 0 });
-    // 显示下一个的时候，需要把方块居中
-    this.centerBlock(this._nextTetris, PageShowerConfig.nextPanelSize.width)
+    // 把当前的方块给移除掉
+    this._curTetris.BlockArr.forEach(bk => {
+      if (bk.shower) {
+        bk.shower.remove();
+      }
+    })
+    this.centerBlock(this._curTetris, PageShowerConfig.blockPaneSize.width);
+    // 需要对游戏的结束进行判断
+    if (!TetrisRules.isMove(this._curTetris.shape, this._curTetris.centerPointer, this._existBlock)) {
+      // 如果不能移动，标准着游戏结束
+      this._gameStatus = EGameStatus.over;
+      clearInterval(this._timer);
+      this._timer = undefined;
+      this._curTetris = undefined;
+      return;
+    }
+
+    this.createNextBlock();
     // 右侧的方块需要切换，并且需要显示下一个方块
     this._gameShower.switchBlock(this._curTetris);
-    this._gameShower.showNext(this._nextTetris);
   }
   /**
    * 方块自动下落
