@@ -4,8 +4,8 @@
 
 import { Block } from "./Block";
 import { BlockGroup } from "./BlockGroup";
+import GameCoreConfig from "./GameCoreConfig";
 import { EDirection, IPoint, TShape } from "./types";
-import PageShowerConfig from "./viewer/PageShowerConfig";
 /**
  * 判断是否为一个坐标，使用自定义的类型保护
  * @param obj 
@@ -33,7 +33,7 @@ export class TetrisRules {
       }
     })
     // 这里减1 是 因为长度逻辑长度和矿都都是从0开始的
-    let r = targetBlockPoint.some(s => (s.x < 0 || s.x > PageShowerConfig.blockPaneSize.width - 1 || s.y < 0 || s.y > PageShowerConfig.blockPaneSize.height - 1));
+    let r = targetBlockPoint.some(s => (s.x < 0 || s.x > GameCoreConfig.blockPaneSize.width - 1 || s.y < 0 || s.y > GameCoreConfig.blockPaneSize.height - 1));
     if(r){
       return false;
     }
@@ -134,7 +134,7 @@ export class TetrisRules {
     for(let y = minY; y <= maxY; y++){
       // 判断传入的行是否占满整行
      const blockNum = blocks.filter(bk => bk.point.y === y);
-     if(blockNum.length > 0&& blockNum.length === PageShowerConfig.blockPaneSize.width){
+     if(blockNum.length > 0&& blockNum.length === GameCoreConfig.blockPaneSize.width){
        // 消除当前行
        this.removeBlockByLine(blocks, y);
        num ++;

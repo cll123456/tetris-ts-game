@@ -1,6 +1,7 @@
 // 公共的类型
 
 import { BlockGroup } from "./BlockGroup";
+import { Game } from "./Game";
 
 /**
  * 逻辑的点的位置
@@ -76,16 +77,39 @@ export enum EGameStatus {
 /**
  * 游戏类的显示接口
  */
-export interface IGameViewer{
+export interface IGameViewer {
   /**
    * 显示下一个方块
    * @param tetris x
    */
-  showNext(tetris: BlockGroup) : void;
+  showNext(tetris: BlockGroup): void;
 
   /**
    * 切换方块
    * @param tetris 
    */
   switchBlock(tetris: BlockGroup): void;
+
+  /**
+   * 初始化游戏界面
+   * @param game 
+   */
+  initPage(game: Game): void;
+  /**
+   * 计算游戏的分数
+   * @param scores 
+   */
+  countScores(scores: number): void;
+  /**
+   * 开始游戏
+   */
+  gameStart(): void;
+  /**
+   * 游戏暂停
+   */
+  gamePause(): void;
+  /**
+   * 游戏结束
+   */
+  gameOver(): void;
 }

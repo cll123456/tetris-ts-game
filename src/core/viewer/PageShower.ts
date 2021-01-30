@@ -26,14 +26,15 @@ export class PageShower implements IShower {
         width: PageShowerConfig.BlockSize.width,
         position: 'absolute',
         border: PageShowerConfig.BlockBorder,
-        boxSizing: 'border-box'
+        boxSizing: 'border-box',
+        borderRadius: '50%',
       }).appendTo(this.container)
     }
     // 存在后的赋值
     this._dom.css({
       left: PageShowerConfig.BlockSize.width * this.block.point.x,
       top: PageShowerConfig.BlockSize.height * this.block.point.y,
-      background: this.block.color
+      background: `radial-gradient(#fff,${this.block.color})`
     })
   }
   /**

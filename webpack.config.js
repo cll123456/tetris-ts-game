@@ -7,7 +7,7 @@ module.exports = (options = {}) => {
     mode: options.production ? 'production' : 'development',
     entry: "./src/index.ts",
     output: {
-      path: path.resolve(__dirname, 'dist'),
+      path: path.resolve(__dirname, 'docs'),
       filename: options.production ? 'js/[name].[chunkhash:5].js' : '[name].js',
     },
     plugins: [
@@ -22,9 +22,7 @@ module.exports = (options = {}) => {
         modules: false
     },
     devtool: 'eval',
-    devServer: {
-      contentBase: './dist',
-    },
+   
     resolve: {
       // Add `.ts` and `.tsx` as a resolvable extension.
       extensions: [".ts", ".tsx", ".js"]
